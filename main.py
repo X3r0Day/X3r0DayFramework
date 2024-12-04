@@ -37,5 +37,10 @@ while True:
 
     elif opt == 2:
         print("Enter X3r0Day Framework")
+
+
     elif opt == 99:
-        break
+        exit()
+
+    else:
+        print("Error! Please try again!")
