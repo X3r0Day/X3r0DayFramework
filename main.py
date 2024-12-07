@@ -1,5 +1,6 @@
 import os
 import subprocess
+import Framework_handler.fm_handler
 
 def update_fm():
     repo_dir = os.path.dirname(os.path.abspath(__file__))
@@ -25,9 +26,9 @@ def update_fm():
 
 while True:
     print("X3r0Day Toolkit\n")
-    print("1 = Check for update")
-    print("2 = Enter The Framework")
-    print("99 = Exit")
+    print("1 = Check for update\n")
+    print("2 = Enter X3r0Day Framework\n")
+    print("99 = Exit\n")
     
     opt = int(input("> "))
     
@@ -36,7 +37,8 @@ while True:
         update_fm()
 
     elif opt == 2:
-        print("Enter X3r0Day Framework")
+        print("Entering X3r0Day Framework")
+        Framework_handler.fm_handler.main()
 
 
     elif opt == 99:
