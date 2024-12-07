@@ -7,7 +7,7 @@ def main():
     while True:
         print("Welcome to the X3r0Day Framework!")
         time.sleep(.2)
-        opt1 = int(input("1 = XSS Scanner\n2 = SQLi Scanner\n99 = EXIT"))
+        opt1 = int(input("1 = XSS Scanner\n2 = SQLi Scanner\n99 = EXIT\n> "))
         if opt1 == 1:
             Framework_component.xss_framework.main()
         
@@ -24,4 +24,5 @@ def main():
             print("Error! Please try again!")
 
 
-main()
+if __name__ == "__main__":
+    main()

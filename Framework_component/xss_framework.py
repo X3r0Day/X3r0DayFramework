@@ -93,7 +93,7 @@ def xss_fm(method, url, headers, body, payloads, proxies=None, timeout=10, max_t
     return vulnerabilities
 
 def main():
-    print("Welcome to X3r0Day's Improved XSS Framework!")
+    print("Welcome to X3r0Day's XSS Framework!")
 
     payload_file = input("Enter the path of the XSS payload file: ").strip()
     try:
@@ -109,11 +109,11 @@ def main():
     print("\nDo you want to test using:")
     print("1. Burp Suite request file")
     print("2. Direct URL")
+    print("3. Test both (Request File and URL)")
     choice = input("> ").strip()
 
     headers = {}
     body = None
-    proxies = {}
     timeout = 10
 
     if choice == '1':
@@ -126,6 +126,13 @@ def main():
         except Exception as e:
             print(f"[Error] Failed to parse Burp Suite request file: {e}")
             return
+
+        timeout_input = input("Enter request timeout in seconds (default 10): ").strip()
+        if timeout_input.isdigit():
+            timeout = int(timeout_input)
+
+        xss_fm(method, normalize_url(url), headers, body, payloads, timeout=timeout)
+
     elif choice == '2':
         url = input("Enter the URL you want to test for XSS vulnerability (use 'XERODAY' as placeholder): ").strip()
         method = input("Enter the HTTP method (GET or POST): ").strip().upper()
@@ -136,20 +143,51 @@ def main():
         if method == 'POST':
             body = input("Enter the request body (use 'XERODAY' as placeholder): ").strip()
 
+        timeout_input = input("Enter request timeout in seconds (default 10): ").strip()
+        if timeout_input.isdigit():
+            timeout = int(timeout_input)
+
+        xss_fm(method, normalize_url(url), headers, body, payloads, timeout=timeout)
+
+    elif choice == '3':
+        # Testing Burp Suite request file
+        request_file = input("Enter the path to the Burp Suite request file: ").strip()
+        try:
+            method, burp_url, headers, body = parse_request_file(request_file)
+        except FileNotFoundError:
+            print(f"[Error] File not found: {request_file}")
+            return
+        except Exception as e:
+            print(f"[Error] Failed to parse Burp Suite request file: {e}")
+            return
+
+        # Testing direct URL
+        url = input("Enter the URL you want to test for XSS vulnerability (use 'XERODAY' as placeholder): ").strip()
+        method_direct = input("Enter the HTTP method (GET or POST): ").strip().upper()
+        if method_direct not in ['GET', 'POST']:
+            print("[Error] Invalid HTTP method. Please choose GET or POST.")
+            return
+
+        body_direct = None
+        if method_direct == 'POST':
+            body_direct = input("Enter the request body (use 'XERODAY' as placeholder): ").strip()
+
+        timeout_input = input("Enter request timeout in seconds (default 10): ").strip()
+        if timeout_input.isdigit():
+            timeout = int(timeout_input)
+
+        # First test: Burp Suite request
+        print("\nTesting Burp Suite request file...\n")
+        xss_fm(method, normalize_url(burp_url), headers, body, payloads, timeout=timeout)
+
+        # Second test: Direct URL
+        print("\nTesting Direct URL...\n")
+        xss_fm(method_direct, normalize_url(url), {}, body_direct, payloads, timeout=timeout)
+
     else:
         print("[Error] Invalid choice.")
         return
 
-    use_proxy = input("\nDo you want to use a proxy? (y/n): ").strip().lower()
-    if use_proxy == 'y':
-        proxy_url = input("Enter proxy URL (e.g., http://127.0.0.1:8080): ").strip()
-        proxies = {"http": proxy_url, "https": proxy_url}
-
-    timeout_input = input("Enter request timeout in seconds (default 10): ").strip()
-    if timeout_input.isdigit():
-        timeout = int(timeout_input)
-
-    xss_fm(method, normalize_url(url), headers, body, payloads, proxies, timeout)
 
 if __name__ == "__main__":
     main()

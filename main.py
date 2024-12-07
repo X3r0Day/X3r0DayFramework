@@ -1,6 +1,7 @@
 import os
 import subprocess
-import Framework_handler.fm_handler
+from Framework_handler import fm_handler
+
 
 def update_fm():
     repo_dir = os.path.dirname(os.path.abspath(__file__))
@@ -24,25 +25,20 @@ def update_fm():
             print("Failed to update the repository.")
             print(pull_process.stderr)
 
-while True:
-    print("X3r0Day Toolkit\n")
-    print("1 = Check for update\n")
-    print("2 = Enter X3r0Day Framework\n")
-    print("99 = Exit\n")
-    
-    opt = int(input("> "))
-    
-    if opt == 1:
-        print("Checking for updates...")
-        update_fm()
+if __name__ == "__main__":
+    while True:
+        print("X3r0Day Toolkit\n")
+        print("1 = Check for update\n")
+        print("2 = Enter X3r0Day Framework\n")
+        print("99 = Exit\n")
 
-    elif opt == 2:
-        print("Entering X3r0Day Framework")
-        Framework_handler.fm_handler.main()
-
-
-    elif opt == 99:
-        exit()
-
-    else:
-        print("Error! Please try again!")
+        opt = int(input("> "))
+        if opt == 1:
+            print("Checking for updates...")
+        elif opt == 2:
+            print("Entering X3r0Day Framework")
+            fm_handler.main()
+        elif opt == 99:
+            exit()
+        else:
+            print("Error! Please try again!")
