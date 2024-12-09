@@ -35,6 +35,7 @@ if __name__ == "__main__":
         opt = int(input("> "))
         if opt == 1:
             print("Checking for updates...")
+            update_fm()
         elif opt == 2:
             print("Entering X3r0Day Framework")
             fm_handler.main()
