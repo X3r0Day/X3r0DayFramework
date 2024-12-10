@@ -1,3 +1,3 @@
 # X3r0DayFramework
 
-Will add it soon :)
+Will update readme soon :)
