@@ -1,6 +1,8 @@
 # Framework Handler (Which will link all the pieces of framework at once place)
 import time
 import Framework_component.xss_framework
+from colorama import Style, Fore
+
 
 
 def main():
